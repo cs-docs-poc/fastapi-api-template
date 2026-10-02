@@ -17,12 +17,10 @@
           "docs/API",
           "docs/openapi.yaml"
         ]
-      },  
-    {
-      "group": "API reference",
-      "openapi": "openapi.yaml"
-    }
-  ]
+      },
+      {
+        "group": "API reference",
+        "openapi": "openapi.yaml"
       }
     ]
   },
