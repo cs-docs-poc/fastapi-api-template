@@ -14,13 +14,12 @@
         "pages": [
           "README",
           "docs/OVERVIEW_1",
-          "docs/API",
-          "docs/openapi.yaml"
+          "docs/API"
         ]
       },
       {
         "group": "API reference",
-        "openapi": "openapi.json"
+        "openapi": "openapi.yaml"
       }
     ]
   },
