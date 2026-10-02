@@ -1,9 +1,24 @@
 {
   "collapseTableOfContents": true,
   "items": [
-     {
+    {
       "type": "item",
       "title": "API",
+      "uri": "README.md"
+     },
+    {
+      "type": "item",
+      "title": "Overview",
+      "uri": "docs/OVERVIEW_1.md"
+     },
+    {
+      "type": "item",
+      "title": "API overview",
+      "uri": "docs/API.md"
+    },
+    {
+      "type": "item",
+      "title": "API spec",
       "uri": "docs/openapi.yaml"
      }
   ]
