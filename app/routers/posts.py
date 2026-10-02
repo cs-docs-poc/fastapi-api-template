@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select, delete
 from app.db import sessions
 from app.db.models import Posts, Users
@@ -15,21 +15,12 @@ router = APIRouter(prefix="/posts", tags=["posts"])
 auth_user_dependency = Annotated[Users, Depends(get_current_user)]
 
 
-@router.get(
-    "/get/posts",
-    summary="List posts",
-    description="Returns all posts, most recent behaviour unchanged. Pass `limit` to cap how many posts are returned.",
-)
+@router.get("/get/posts")
 async def get_posts(
     current_user: auth_user_dependency,
     db: AsyncSession = Depends(sessions.get_async_session),
-    limit: int | None = Query(
-        default=None, ge=1, description="Maximum number of posts to return."
-    ),
 ) -> Sequence[posts_schema.Posts]:
     q = select(Posts)
-    if limit is not None:
-        q = q.limit(limit)
     result = await db.execute(q)
     posts = result.scalars().all()
     if not posts:
@@ -51,24 +42,6 @@ async def get_post(
     if not post:
         raise HTTPException(status_code=404, detail="Post not found")
     return post
-
-
-@router.get(
-    "/get/posts/by-user/{user_id}",
-    summary="List posts by user",
-    description="Returns every post created by the given user ID.",
-)
-async def get_posts_by_user(
-    current_user: auth_user_dependency,
-    user_id: int,
-    db: AsyncSession = Depends(sessions.get_async_session),
-) -> Sequence[posts_schema.Posts]:
-    q = select(Posts).filter(Posts.user_id == user_id)
-    result = await db.execute(q)
-    posts = result.scalars().all()
-    if not posts:
-        raise HTTPException(status_code=404, detail="No posts found for this user")
-    return posts
 
 
 @router.post("/add/post")
