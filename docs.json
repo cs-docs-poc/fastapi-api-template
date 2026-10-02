@@ -1,25 +1,47 @@
 {
-  "collapseTableOfContents": true,
-  "items": [
-    {
-      "type": "item",
-      "title": "API",
-      "uri": "README.md"
-     },
-    {
-      "type": "item",
-      "title": "Overview",
-      "uri": "docs/OVERVIEW_1.md"
-     },
-    {
-      "type": "item",
-      "title": "API overview",
-      "uri": "docs/API.md"
-    },
-    {
-      "type": "item",
-      "title": "API spec",
-      "uri": "docs/openapi.yaml"
-     }
-  ]
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Fastapi Template",
+  "colors": {
+    "primary": "#373C49",
+    "light": "#F9B000",
+    "dark": "#373C49"
+  },
+  "navigation": {
+    "groups": [
+      {
+        "group": "Documentation",
+        "pages": [
+          "README",
+          "docs/OVERVIEW_1",
+          "docs/API"
+        ]
+      },
+      {
+        "group": "API reference",
+        "openapi": "openapi.json"
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@callsign.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Contact us",
+      "href": "https://www.callsign.com/contact"
+    }
+  },
+  "footer": {
+    "socials": {
+      "website": "https://www.callsign.com",
+      "x": "https://www.twitter.com/callsign",
+      "instagram": "https://www.instagram.com/callsign",
+      "linkedin": "https://www.linkedin.com/company/callsign"
+    }
+  }
 }
