@@ -19,7 +19,7 @@
       },
       {
         "group": "API reference",
-        "openapi": "openapi.yaml"
+        "openapi": "openapi.json"
       }
     ]
   },
