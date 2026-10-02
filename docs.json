@@ -1,0 +1,10 @@
+{
+  "collapseTableOfContents": true,
+  "items": [
+     {
+      "type": "item",
+      "title": "API",
+      "uri": "docs/openapi.yaml"
+     }
+  ]
+}
