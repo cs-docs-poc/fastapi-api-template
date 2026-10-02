@@ -1,1 +1,479 @@
-
+openapi: 3.0.2
+info:
+  title: Fastapi Template API
+  version: 0.1.0
+  description: A reference API for the Fastapi Template. It provides JWT based authentication, user management,
+    and a simple posts resource, and is intended as a starting point for new FastAPI services rather than
+    a production API.
+paths:
+  /users/get/users:
+    get:
+      tags:
+      - users
+      summary: Get Users
+      operationId: get_users_users_get_users_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Users Users Get Users Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Users'
+      security:
+      - JWT: []
+      description: Returns every user, including each user's posts. Returns a 404 error if no users exist.
+  /users/get/user/{id}:
+    get:
+      tags:
+      - users
+      summary: Get User
+      operationId: get_user_users_get_user__id__get
+      parameters:
+      - required: true
+        schema:
+          title: Id
+          type: integer
+        name: id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get User Users Get User  Id  Get
+                anyOf:
+                - $ref: '#/components/schemas/Users'
+                - type: object
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - JWT: []
+      description: Returns a single user by ID, including their posts. Returns a 404 error if no user
+        with that ID exists.
+  /users/delete/user/{id}:
+    delete:
+      tags:
+      - users
+      summary: Delete User
+      operationId: delete_user_users_delete_user__id__delete
+      parameters:
+      - required: true
+        schema:
+          title: Id
+          type: integer
+        name: id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete User Users Delete User  Id  Delete
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - JWT: []
+      description: Deletes a user by ID. The request is rejected with a 400 error if the caller tries
+        to delete their own account, and with a 401 error if the caller is not an admin.
+  /posts/get/posts:
+    get:
+      tags:
+      - posts
+      summary: Get Posts
+      operationId: get_posts_posts_get_posts_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Posts Posts Get Posts Get
+                type: array
+                items:
+                  $ref: '#/components/schemas/Posts'
+      security:
+      - JWT: []
+      description: Returns every post. Returns a 404 error if no posts exist.
+  /posts/get/post/{id}:
+    get:
+      tags:
+      - posts
+      summary: Get Post
+      operationId: get_post_posts_get_post__id__get
+      parameters:
+      - required: true
+        schema:
+          title: Id
+          type: integer
+        name: id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Get Post Posts Get Post  Id  Get
+                anyOf:
+                - $ref: '#/components/schemas/Posts'
+                - type: object
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - JWT: []
+      description: Returns a single post by ID. Returns a 404 error if no post with that ID exists.
+  /posts/add/post:
+    post:
+      tags:
+      - posts
+      summary: Add a post
+      operationId: add_user_posts_add_post_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostsCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Add User Posts Add Post Post
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - JWT: []
+      description: Creates a post for the given user ID. The caller is authenticated, but the post is
+        not currently restricted to the caller's own user ID.
+  /posts/delete/post/{id}:
+    delete:
+      tags:
+      - posts
+      summary: Delete a post
+      operationId: delete_user_posts_delete_post__id__delete
+      parameters:
+      - required: true
+        schema:
+          title: Id
+          type: integer
+        name: id
+        in: path
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Delete User Posts Delete Post  Id  Delete
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      security:
+      - JWT: []
+      description: Deletes a post by ID. Returns a 404 error if no post with that ID exists, and a 401
+        error if the post's `user_id` does not match the caller's own ID.
+  /auth/register:
+    post:
+      tags:
+      - auth
+      summary: Register a new user
+      operationId: register_user_auth_register_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UsersCreate'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Register User Auth Register Post
+                type: string
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      description: Creates a new user. Returns a 400 error if a user with the given email already exists.
+        The password is hashed before it is stored; it is never returned in a response.
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: Create access and refresh tokens for user
+      operationId: login_auth_login_post
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Body_login_auth_login_post'
+        required: true
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Token'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+      description: Exchanges an email and password for an access token and a refresh token, following
+        the OAuth2 password grant. The form field named `username` must hold the user's email address;
+        this naming is required by the OAuth2 specification and is not a separate field.
+  /health:
+    get:
+      summary: Health
+      operationId: health_health_get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                title: Response Health Health Get
+                type: string
+      description: A basic liveness check. Returns the literal string `ok` and does not require authentication.
+      tags:
+      - health
+components:
+  schemas:
+    Body_login_auth_login_post:
+      title: Body_login_auth_login_post
+      required:
+      - username
+      - password
+      type: object
+      properties:
+        grant_type:
+          title: Grant Type
+          pattern: password
+          type: string
+        username:
+          title: Username
+          type: string
+        password:
+          title: Password
+          type: string
+        scope:
+          title: Scope
+          type: string
+          default: ''
+        client_id:
+          title: Client Id
+          type: string
+        client_secret:
+          title: Client Secret
+          type: string
+    HTTPValidationError:
+      title: HTTPValidationError
+      type: object
+      properties:
+        detail:
+          title: Detail
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+    Posts:
+      title: Posts
+      required:
+      - title
+      - content
+      - id
+      - creation_date
+      - user_id
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        content:
+          title: Content
+          type: string
+        id:
+          title: Id
+          type: integer
+        creation_date:
+          title: Creation Date
+          type: string
+          format: date
+        user_id:
+          title: User Id
+          type: integer
+      description: A single post.
+    PostsCreate:
+      title: PostsCreate
+      required:
+      - title
+      - content
+      - user_id
+      type: object
+      properties:
+        title:
+          title: Title
+          type: string
+        content:
+          title: Content
+          type: string
+        user_id:
+          title: User Id
+          type: integer
+      description: The payload required to create a post.
+    Token:
+      title: Token
+      required:
+      - access_token
+      - refresh_token
+      type: object
+      properties:
+        access_token:
+          title: Access Token
+          type: string
+        refresh_token:
+          title: Refresh Token
+          type: string
+      description: An access token and refresh token pair, returned on login.
+    Users:
+      title: Users
+      required:
+      - first_name
+      - last_name
+      - email
+      - is_admin
+      - id
+      - creation_date
+      type: object
+      properties:
+        first_name:
+          title: First Name
+          type: string
+        last_name:
+          title: Last Name
+          type: string
+        email:
+          title: Email
+          type: string
+          format: email
+        is_admin:
+          title: Is Admin
+          type: boolean
+        id:
+          title: Id
+          type: integer
+        creation_date:
+          title: Creation Date
+          type: string
+          format: date
+        posts:
+          title: Posts
+          type: array
+          items:
+            $ref: '#/components/schemas/Posts'
+          default: []
+      description: A registered user, including their posts.
+    UsersCreate:
+      title: UsersCreate
+      required:
+      - first_name
+      - last_name
+      - email
+      - is_admin
+      - password
+      type: object
+      properties:
+        first_name:
+          title: First Name
+          type: string
+        last_name:
+          title: Last Name
+          type: string
+        email:
+          title: Email
+          type: string
+          format: email
+        is_admin:
+          title: Is Admin
+          type: boolean
+        password:
+          title: Password
+          type: string
+      description: The payload required to register a new user.
+    ValidationError:
+      title: ValidationError
+      required:
+      - loc
+      - msg
+      - type
+      type: object
+      properties:
+        loc:
+          title: Location
+          type: array
+          items:
+            anyOf:
+            - type: string
+            - type: integer
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+  securitySchemes:
+    JWT:
+      type: oauth2
+      flows:
+        password:
+          scopes: {}
+          tokenUrl: /auth/login
+      description: 'JWT bearer token obtained from /auth/login. Send it as `Authorization: Bearer <access_token>`
+        on every request to a protected endpoint.'
+servers:
+- url: http://127.0.0.1:8000
+  description: Local development server
+tags:
+- name: auth
+  description: Registration and login. Login issues a short-lived access token and a longer-lived refresh
+    token.
+- name: users
+  description: User records. Every endpoint in this group requires a valid access token.
+- name: posts
+  description: Posts created by users. Every endpoint in this group requires a valid access token.
+- name: health
+  description: Service health check, used for monitoring.
