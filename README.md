@@ -82,3 +82,7 @@ Finaly, run the API itself with the following command:
 ```zsh
 uvicorn app.main:app --reload
 ```
+
+## Documentation
+
+For a walkthrough of the application's functionality, see [`docs/OVERVIEW.md`](./docs/OVERVIEW.md). For an endpoint-by-endpoint reference, see [`docs/API.md`](./docs/API.md) or the OpenAPI spec at [`docs/openapi.yaml`](./docs/openapi.yaml).
