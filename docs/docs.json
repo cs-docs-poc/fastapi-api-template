@@ -13,8 +13,8 @@
         "group": "Documentation",
         "pages": [
           "README",
-          "docs/OVERVIEW_1",
-          "docs/API"
+          "OVERVIEW_1",
+          "API"
         ]
       },
       {
